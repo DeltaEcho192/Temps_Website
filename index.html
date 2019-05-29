@@ -12,7 +12,8 @@
     <button id="signout_button" style="display: none;">Sign Out</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
-
+    <canvas id="myChart" width="200" height="200"></canvas>
+    <script src="chart.js/dist/Chart.js"></script>
     <script type="text/javascript">
       // Client ID and API key from the Developer Console
       var CLIENT_ID = '925907734812-5juaqi76ugrrfbrttcunqelfibphsipf.apps.googleusercontent.com';
@@ -107,8 +108,8 @@
       function listUpcomingEvents() {
         var old = "2019-05-10T10:07:11.486Z"
         var d = (new Date()).toISOString();
-        console.log(old);
-        console.log(d);
+        //console.log(old);
+        //console.log(d);
         gapi.client.calendar.events.list({
           'calendarId': 'primary',
           'timeMin': old,
@@ -123,6 +124,18 @@
           appendPre('Upcoming events:');
 
           if (events.length > 0) {
+            lightPurple = 0;
+            sage = 0;
+            purple = 0;
+            salmon = 0;
+            yellow = 0;
+            orange = 0;
+            blue = 0;
+            grey = 0;
+            darkBlue = 0;
+            green = 0;
+            red = 0;
+
             for (i = 0; i < events.length; i++) {
               var event = events[i];
               var start = event.start.dateTime;
@@ -133,6 +146,10 @@
               {
                 color = 7;
 
+              }
+              else
+              {
+                color = parseInt(color);
               }
 
               //
@@ -169,8 +186,8 @@
               timeFinalEnd = timeSplitEnd[0].split(":");
               timeZoneEnd = timeSplitEnd[1];
 
-              console.log(dateEndFinal);
-              console.log(timeFinalEnd); 
+              //console.log(dateEndFinal);
+              //console.log(timeFinalEnd); 
               
               //
               //
@@ -210,7 +227,43 @@
                   FinalTime = hourMin - deltaMin;
               }
 
-              console.log(FinalTime);
+              //console.log(FinalTime);
+              switch (color)
+              {
+                case 1:
+                  lightPurple = lightPurple + FinalTime;
+                  console.log(lightPurple);
+                case 2:
+                  sage = sage  + FinalTime;
+                case 3:
+                  purple = purple  + FinalTime;
+                  break;
+                case 4:
+                  salmon = salmon  + FinalTime;
+                  break;
+                case 5:
+                  yellow = yellow  + FinalTime;
+                  break;
+                case 6:
+                  orange = orange + FinalTime;
+                  break;
+                case 7:
+                  blue = blue + FinalTime;
+                  console.log(blue);
+                  break;
+                case 8:
+                  grey = grey + FinalTime;
+                  break;
+                case 9:
+                  darkBlue = darkBlue + FinalTime;
+                  break;
+                case 10:
+                  green = green + FinalTime;
+                  break;
+                case 11:
+                  red = red + FinalTime;
+                  break;
+              }
 
               if (!start) {
                 start = event.start.date;
@@ -218,12 +271,54 @@
 
                appendPre(event.summary + ' (' + start + ')' + 'Color: ' + color)
             }
+          console.log(lightPurple);
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['LightPurple', 'Sage', 'Purple', 'Salmon', 'Yellow', 'Orange','Blue','Grey','Dark Blue','Green','Red'],
+                datasets: [{
+                    label: 'Hours Spent',
+                    data: [lightPurple, sage, purple, salmon, yellow, orange, blue,grey,darkBlue,green,red],
+                    backgroundColor: [
+                      //Change Colors to be Same As name TODO
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(173, 102, 255, 0.2)',
+                        'rgba(153, 122, 255, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(153, 02, 255, 0.2)',
+                        'rgba(13, 172, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(173, 102, 255, 1)',
+                        'rgba(153, 122, 255, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(153, 02, 255, 1)',
+                        'rgba(13, 172, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+      });
           } else {
             appendPre('No upcoming events found.');
           }
+          
         });
       }
 
+      
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
