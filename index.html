@@ -1,8 +1,11 @@
+
 <!DOCTYPE html>
 <html>
   <head>
+
     <title>Google Calendar API Quickstart</title>
     <meta charset="utf-8" />
+
   </head>
   <body>
     <p>Google Calendar API Quickstart</p>
@@ -10,11 +13,31 @@
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
+    <input type="text" name="date" id="date">
+    <div width="500" height="500">
+      <canvas id="myChart" width="500" height="500"></canvas>
+    <div>
 
+    </div>
     <pre id="content" style="white-space: pre-wrap;"></pre>
-    <canvas id="myChart" width="200" height="200"></canvas>
+
     <script src="chart.js/dist/Chart.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="jquery-ui/jquery-ui.min.js"></script>
+
     <script type="text/javascript">
+
+
+
+
+      //TODO Add date Picker
+      //TODO Get Graph Right Size
+      //TODO Beutify Website:
+      //Change button Style
+      //Add Proper Heading
+      //TODO Future make Docker Available
+
+
       // Client ID and API key from the Developer Console
       var CLIENT_ID = '925907734812-5juaqi76ugrrfbrttcunqelfibphsipf.apps.googleusercontent.com';
       var API_KEY = 'AIzaSyBB8nXHQYLQeQEFuQ6XqP1mVsSXwXjp8IU';
@@ -67,7 +90,14 @@
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
           signoutButton.style.display = 'block';
-          listUpcomingEvents();
+          $("#date").datepicker();
+          $("#date").on("change",function(){
+              var selected = $(this).val();
+              console.log(selected);
+              listUpcomingEvents(selected);
+
+          });
+
         } else {
           authorizeButton.style.display = 'block';
           signoutButton.style.display = 'none';
@@ -105,8 +135,12 @@
        * the authorized user's calendar. If no events are found an
        * appropriate message is printed.
        */
-      function listUpcomingEvents() {
-        var old = "2019-05-10T10:07:11.486Z"
+      function listUpcomingEvents(old_Date) {
+        oldDateArr = old_Date.split('/');
+        console.log(oldDateArr);
+        var old = oldDateArr[2] + "-" + oldDateArr[0] + "-" + oldDateArr[1] + "T00:00:00.000Z";
+        old = old.toString();
+        console.log(old);
         var d = (new Date()).toISOString();
         //console.log(old);
         //console.log(d);
@@ -187,8 +221,8 @@
               timeZoneEnd = timeSplitEnd[1];
 
               //console.log(dateEndFinal);
-              //console.log(timeFinalEnd); 
-              
+              //console.log(timeFinalEnd);
+
               //
               //
               //
@@ -282,43 +316,54 @@
                     data: [lightPurple, sage, purple, salmon, yellow, orange, blue,grey,darkBlue,green,red],
                     backgroundColor: [
                       //Change Colors to be Same As name TODO
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(173, 102, 255, 0.2)',
-                        'rgba(153, 122, 255, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(153, 02, 255, 0.2)',
-                        'rgba(13, 172, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(121,134,203, 0.5)',
+                        'rgba(51,182,121, 0.5)',
+                        'rgba(142,36,170, 0.5)',
+                        'rgba(230,124,115, 0.5)',
+                        'rgba(245,190,38, 0.5)',
+                        'rgba(244,81,30, 0.5)',
+                        'rgba(3,155,229, 0.5)',
+                        'rgba(97,97,97, 0.5)',
+                        'rgba(63,81,181, 0.5)',
+                        'rgba(11,128,67, 0.5)',
+                        'rgba(213,0,0, 0.5)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(173, 102, 255, 1)',
-                        'rgba(153, 122, 255, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(153, 02, 255, 1)',
-                        'rgba(13, 172, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(121,134,203, 1)',
+                        'rgba(51,182,121, 1)',
+                        'rgba(142,36,170, 1)',
+                        'rgba(230,124,115, 1)',
+                        'rgba(245,190,38, 1)',
+                        'rgba(244,81,30, 1)',
+                        'rgba(3,155,229, 1)',
+                        'rgba(97,97,97, 1)',
+                        'rgba(63,81,181, 1)',
+                        'rgba(11,128,67, 1)',
+                        'rgba(213,0,0, 1)'
                     ],
                     borderWidth: 1
                 }]
+            },
+            options: {
+              maintainAspectRatio: true,
+              responsive: false,
+              legend: {
+                labels: {
+                    // This more specific font property overrides the global property
+                    fontColor: 'black'
+                }
+            }
+
             }
       });
           } else {
             appendPre('No upcoming events found.');
           }
-          
+
         });
       }
 
-      
+
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
